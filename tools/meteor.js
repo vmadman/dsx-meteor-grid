@@ -738,6 +738,7 @@ Fiber(function () {
             .boolean('debug')
             .describe('debug', 'deploy in debug mode (don\'t minify, etc)')
             .describe('settings', 'set optional data for Meteor.settings')
+            .describe('star', 'a star (tarball) to deploy instead of the current meteor app')
             .usage(
               "Usage: meteor deploy <site> [--password] [--settings settings.json] [--debug] [--delete]\n" +
                 "\n" +
@@ -779,10 +780,11 @@ Fiber(function () {
 
       if (new_argv.delete) {
         if (useGalaxy)
-          deployGalaxy.deleteService(site);
+          deployGalaxy.deleteApp(site);
         else
           deploy.delete_app(site);
       } else {
+        var starball = new_argv.star;
         requireDirInApp("deploy");
         var settings = undefined;
         if (new_argv.settings)
@@ -795,10 +797,11 @@ Fiber(function () {
           }
 
           deployGalaxy.deploy({
-            service: site,
+            app: site,
             appDir: context.appDir,
             settings: settings,
             context: context,
+            starball: starball,
             bundleOptions: {
               nodeModulesMode: 'skip',
               minify: !new_argv.debug,
