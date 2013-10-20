@@ -1,4 +1,4 @@
-# Meteor
+# dsx-meteor-grid
 
 A grid experiment using:
 
